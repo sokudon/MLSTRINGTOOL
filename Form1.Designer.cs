@@ -177,12 +177,18 @@
             // 
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
+            "アイドルマスターズカップ10日速,http://bit.ly/1OBWy5c,168",
+            "アイドルマスターズカップ10時速,http://bit.ly/1HqUoVo,cb3a057f0c7340",
+            "バスケリーグ日速,http://bit.ly/1JeQUVp,163",
+            "バスケリーグ時速,http://bit.ly/1FvHZ0G,2f9741706f6740",
+            "プラチナスターライブFINAL日速,http://bit.ly/1HZpG4p,161",
+            "プラチナスターライブFINAL時速,http://bit.ly/1x02vG6,a58f2e5afacfb1",
             "カーニバル日速,http://bit.ly/18uNlNp,155",
             "カーニバル時速,http://bit.ly/1wjSrrf,d931a07bb4066d",
             "ファッションー日速,http://bit.ly/1wrhDwd,153",
             "ファッションー時速,http://bit.ly/1818JtA,ca848236341918",
-            "アイドルマスターズカップ8日速,http://bit.ly/1IaBgxB,152",
-            "アイドルマスターズカップ8時速,http://bit.ly/1uvAeGm,3b3027580311b8",
+            "アイドルマスターズカップ9日速,http://bit.ly/1IaBgxB,152",
+            "アイドルマスターズカップ9時速,http://bit.ly/1uvAeGm,3b3027580311b8",
             "甘ふわ♪ショコラハウス日速,http://bit.ly/1KFNme7,149",
             "甘ふわ♪ショコラハウス時速,http://bit.ly/1CaJvnd,e9a04ce174c72f",
             "鬼だらけ!アイドル節分パニック日速,http://bit.ly/15T4Gzi,148",

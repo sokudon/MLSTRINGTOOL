@@ -29,7 +29,8 @@ namespace WindowsFormsApplication7
             public Int32 rank4;
             public Int32 rank5;
             public Int32 rank6;
-            public BorderTBL(DateTime now, Int32 j, Int32 k, Int32 l, Int32 m, Int32 n, Int32 o)
+            public Int32 rank7;
+            public BorderTBL(DateTime now, Int32 j, Int32 k, Int32 l, Int32 m, Int32 n, Int32 o, Int32 p)
         {
             timer =now;
             rank1 = j;
@@ -38,6 +39,7 @@ namespace WindowsFormsApplication7
             rank4 = m;
             rank5 = n;
             rank6 = o;
+            rank7 = p;
         }
         }
 
@@ -234,10 +236,10 @@ namespace WindowsFormsApplication7
                 {
                     //textBox2.Text = boder_parser(textBox1.Text) + textBox2.Text;
                     string[] s = boder_parser(textBox1.Text).Split(("|").ToCharArray());
-                    textBox2.Text = boder_parser(s[0]) + textBox2.Text;
+                    textBox2.Text =s[0] + textBox2.Text;
                     if (s.Length > 1)
                     {
-                        textBox6.Text = boder_parser(s[1]) + textBox6.Text;
+                        textBox6.Text =s[1] + textBox6.Text;
                     }
                 }
                 else
@@ -256,20 +258,20 @@ namespace WindowsFormsApplication7
                 if (checkBox11.Checked == true)
                 {    //textBox2.Text = boder_parser(textBox1.Text) + textBox2.Text;
                     string[] s = boder_parser(textBox1.Text).Split(("|").ToCharArray());
-                    textBox2.Text = boder_parser(s[0]) + textBox2.Text;
+                    textBox2.Text = s[0] + textBox2.Text;
                     if (s.Length > 1)
                     {
-                        textBox6.Text = boder_parser(s[1]) + textBox6.Text;
+                        textBox6.Text =s[1] + textBox6.Text;
                     }
                 }
                 else
                 {
                     string[] s = boder_parser(textBox1.Text).Split(("|").ToCharArray());
 
-                    textBox2.Text += boder_parser(s[0]);
+                    textBox2.Text += s[0];
                     if (s.Length > 1)
                     { 
-                    textBox6.Text += boder_parser(s[1]);
+                    textBox6.Text += s[1];
                     }
                 }
             }
@@ -425,7 +427,7 @@ namespace WindowsFormsApplication7
                 }
                 return sbtm.ToString();
             }
-            else if (comboBox4.Text.Contains("中間 / 最終全収集"))
+            else if (comboBox4.Text.Contains("中間/最終全収集"))
             {
                 int start = sbase.IndexOf("前へ次へ");
                 int end = sbase.LastIndexOf("前へ次へ")-start;
@@ -564,7 +566,7 @@ namespace WindowsFormsApplication7
             List<BorderTBL> arr = new List<BorderTBL>();
             SorterByTimer sorter = new SorterByTimer();
             DateTime t = DateTime.Now;
-            int[] jsoku = new int[6];
+            int[] jsoku = new int[7];
             string baseyear = "2015/";
             string basenyear = "2016/";
 
@@ -708,6 +710,7 @@ namespace WindowsFormsApplication7
                 StringBuilder sb30 = new StringBuilder();
                 StringBuilder sb100 = new StringBuilder();
                 StringBuilder sb5000 = new StringBuilder();
+                StringBuilder sb5001 = new StringBuilder();
 
 
                 if (radioButton2.Checked == false)
@@ -790,10 +793,14 @@ namespace WindowsFormsApplication7
                             if (strs.Length > 10)
                             {
                                 sb100.AppendLine(strs[9]);
-                            }
-                            if (strs.Length > 12)
-                            {
-                                sb5000.AppendLine(strs[11]);
+                                if (strs.Length > 12)
+                                {
+                                    sb5000.AppendLine(strs[11]);
+                                    if (strs.Length > 14)
+                                    {
+                                        sb5001.AppendLine(strs[13]);
+                                    }
+                                }
                             }
                         }
                     }
@@ -802,7 +809,7 @@ namespace WindowsFormsApplication7
                 }
 
                 bool ok = true;
-                int f = -6;
+                int f = -7;
 
                 foreach (string s in str)
                 {
@@ -947,7 +954,7 @@ namespace WindowsFormsApplication7
                                             {
                                             int.TryParse(str2[i],NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo,out jsoku[i>>1]);                                            
                                             }       
-                                        arr.Add(new BorderTBL(dt, jsoku[0], jsoku[1], jsoku[2],jsoku[3],jsoku[4],jsoku[5]));
+                                        arr.Add(new BorderTBL(dt, jsoku[0], jsoku[1], jsoku[2],jsoku[3],jsoku[4],jsoku[5],jsoku[6]));
                                         rtb = true;
                                         }
 
@@ -1087,7 +1094,7 @@ namespace WindowsFormsApplication7
 
                                 }
                             }
-                            else {//3
+                            else {//RTB計算
 
                                 string nums = "(1|\\d+0||11)位[\\t 　]+(\\d+(,\\d{3})*)";
                                 string reg = "※?(\\d\\d\\d\\d/)?(\\d\\d/\\d\\d).*?(\\d\\d:\\d\\d) 集計時点";
@@ -1102,37 +1109,20 @@ namespace WindowsFormsApplication7
 
                                 if (rankm.Success) {
                                     tmp = rankm.Value;
-                                    //if(tmp.Contains("1位")){
-                                    //   // f = -5;
-                                    //    if (tmp.Contains("11位"))//配列番目
-                                    //    {
-                                    //        tmp = Regex.Replace(tmp, nums, "$2");
-                                    //        int.TryParse(tmp, NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out jsoku[f+4]);
-
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        tmp = Regex.Replace(tmp, nums, "$2");
-                                    //        int.TryParse(tmp, NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out jsoku[0]);
-                                    //    }
-                                    //}
-                                    //else if (tmp.Contains("0位"))
-                                    //{
-
                                         tmp = Regex.Replace(tmp, nums, "$2");
                                         
-                                        if ((f >= -6) && (f <0))
+                                        if ((f >= -7) && (f <0))
                                         {
-                                            int.TryParse(tmp,NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo,out jsoku[f+6]);   
+                                            int.TryParse(tmp,NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo,out jsoku[f+7]);   
                                          }
                                     //}
                                 }
                                 else if (addmpt.Success)
                                 {
                                     tmp = addmpt.Value;
-                                        f = -7;
+                                        f = -8;
                                             tmp = Regex.Replace(tmp,  regtpt, "$1");
-                                            int.TryParse(tmp, NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out jsoku[4]);
+                                            int.TryParse(tmp, NumberStyles.Integer | NumberStyles.AllowThousands, NumberFormatInfo.CurrentInfo, out jsoku[6]);
 
                                 }
                                 else if (addm.Success)
@@ -1161,11 +1151,11 @@ namespace WindowsFormsApplication7
                                         localTime = System.TimeZoneInfo.ConvertTimeFromUtc(utcTime, System.TimeZoneInfo.Local);
                                         t = localTime;
                                     }
-                                    arr.Add(new BorderTBL(t, jsoku[0], jsoku[1], jsoku[2], jsoku[3], jsoku[4],jsoku[5]));
-                                    f = -7;
+                                    arr.Add(new BorderTBL(t, jsoku[0], jsoku[1], jsoku[2], jsoku[3], jsoku[4], jsoku[5], jsoku[6]));
+                                    f = -8;
                                 }
                                 else {
-                                    f = -7;
+                                    f = -8;
                                 }
 
                             }
@@ -1204,18 +1194,21 @@ namespace WindowsFormsApplication7
                     sb30.Append(arr[j].timer.ToString(datetimes));
                     sb100.Append(arr[j].timer.ToString(datetimes));
                     sb5000.Append(arr[j].timer.ToString(datetimes));
+                    sb5001.Append(arr[j].timer.ToString(datetimes));
                     sb10.Append("\t");
                     sb50.Append("\t");
                     sb11.Append("\t");
                     sb30.Append("\t");
                     sb100.Append("\t");
                     sb5000.Append("\t");
+                    sb5001.Append("\t");
                     sb10.AppendLine(addcm(arr[j].rank1,cms));
                     sb50.AppendLine(addcm(arr[j].rank2, cms));
                     sb11.AppendLine(addcm(arr[j].rank3, cms));
                     sb30.AppendLine(addcm(arr[j].rank4, cms));
                     sb100.AppendLine(addcm(arr[j].rank5, cms));
                     sb5000.AppendLine(addcm(arr[j].rank6, cms));
+                    sb5001.AppendLine(addcm(arr[j].rank7, cms));
 
                     for (int z = j; z < l; z++)
                     {
@@ -1283,13 +1276,31 @@ namespace WindowsFormsApplication7
                         sb5000.AppendLine(")");
 
                     }
+                    for (int z = j; z < l; z++)
+                    {
+                        sb5001.Append(arr[z + 1].timer.ToString(datetimes));
+                        sb5001.Append("\t");
+                        tt = arr[z + 1].rank7 - arr[z].rank7;
+                        sb5001.Append(addcm(arr[z + 1].rank7, cms));
+                        sb5001.Append("(+");
+                        sb5001.Append(addcm(tt, cms));
+                        sb5001.AppendLine(")");
+
+                    }
                     
                 }
 
 
                     if (checkBox7.Checked)
                     {
-                        sb.AppendLine(sb5000.ToString());
+                        if (strs.Length > 14)
+                        {
+                            sb.AppendLine(sb5001.ToString());
+                        }
+                        if (strs.Length > 12)
+                        {
+                            sb.AppendLine(sb5000.ToString());
+                        }
                         sb.AppendLine(sb100.ToString());
                     }
 
