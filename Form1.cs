@@ -397,17 +397,27 @@ namespace WindowsFormsApplication7
                 Match lm = ls.Match(sbase);
                 Regex fs = new Regex("本日の総フェス勝利数\r\n(\\d+ / \\d+)\r\n\r\n※.+集計時点");
                 Match fm = fs.Match(sbase);
+                Regex ts = new Regex("本日の達成まで\r\nあと[ \t]+\\d+[ \t]+pt\r\n\r\n※.+集計時点");
+                Match tm = ts.Match(sbase);
                 if (lm.Success)
                 {
 
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(lm.Value);
                     sbtm.AppendLine(nw.ToString("※MM/dd HH:mm 集計時点　らうんじ"));
-                } if (fm.Success)
+                } 
+                if (fm.Success)
                 {
 
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(fm.Value);
+                    //sbtm.AppendLine(nw.ToString("※MM/dd HH:mm 集計時点 フェス"));
+                }
+                if (tm.Success)
+                {
+
+                    sbtm.AppendLine("|");
+                    sbtm.AppendLine(tm.Value);
                     //sbtm.AppendLine(nw.ToString("※MM/dd HH:mm 集計時点 フェス"));
                 }
 

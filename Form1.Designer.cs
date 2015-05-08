@@ -177,6 +177,10 @@
             // 
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
+            "生っすかサンデー日速,http://bit.ly/1PqusKD,173",
+            "生っすかサンデー時速,http://bit.ly/1EbTHLh,0fae1ffa3a0229",
+            "復刻あいどるきゃっする日速,http://bit.ly/1Gp2pq7,171",
+            "復刻あいどるきゃっする時速,http://bit.ly/1FrlKus,23ab996d1900fd",
             "アイドルマスターズカップ10日速,http://bit.ly/1OBWy5c,168",
             "アイドルマスターズカップ10時速,http://bit.ly/1HqUoVo,cb3a057f0c7340",
             "バスケリーグ日速,http://bit.ly/1JeQUVp,163",
