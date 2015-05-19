@@ -177,6 +177,8 @@
             // 
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
+            "ゴールデンキャッスル日速,http://bit.ly/1ILKe2o,,169",
+            "ゴールデンキャッスル時速,http://bit.ly/1KfGI28,5a7141ef596e4c",
             "生っすかサンデー日速,http://bit.ly/1PqusKD,173",
             "生っすかサンデー時速,http://bit.ly/1EbTHLh,0fae1ffa3a0229",
             "復刻あいどるきゃっする日速,http://bit.ly/1Gp2pq7,171",

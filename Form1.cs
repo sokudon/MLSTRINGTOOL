@@ -399,6 +399,8 @@ namespace WindowsFormsApplication7
                 Match fm = fs.Match(sbase);
                 Regex ts = new Regex("本日の達成まで\r\nあと[ \t]+\\d+[ \t]+pt\r\n\r\n※.+集計時点");
                 Match tm = ts.Match(sbase);
+                Regex idols = new Regex("(.*?\t?){3}\r\n(\\d+ / \\d+\t?){3}\r\n※.+集計時点");
+                Match idolm = idols.Match(sbase);
                 if (lm.Success)
                 {
 
@@ -411,14 +413,18 @@ namespace WindowsFormsApplication7
 
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(fm.Value);
-                    //sbtm.AppendLine(nw.ToString("※MM/dd HH:mm 集計時点 フェス"));
                 }
                 if (tm.Success)
                 {
 
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(tm.Value);
-                    //sbtm.AppendLine(nw.ToString("※MM/dd HH:mm 集計時点 フェス"));
+                } 
+                if (idolm.Success)
+                {
+
+                    sbtm.AppendLine("|");
+                    sbtm.AppendLine(idolm.Value);
                 }
 
                 return sbtm.ToString();
