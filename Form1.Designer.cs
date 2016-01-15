@@ -76,6 +76,7 @@
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.button6 = new System.Windows.Forms.Button();
             this.textBox6 = new System.Windows.Forms.TextBox();
+            this.output_st = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -440,6 +441,7 @@
             "IMCぷれみあ",
             "IMC自相手",
             "HTML-ID付き収集",
+            "絆LV収集",
             "RTB変換(BASEYEAR 2014->2015)"});
             this.comboBox4.Location = new System.Drawing.Point(367, 102);
             this.comboBox4.Name = "comboBox4";
@@ -776,12 +778,20 @@
             this.textBox6.Size = new System.Drawing.Size(137, 208);
             this.textBox6.TabIndex = 43;
             // 
+            // output_st
+            // 
+            this.output_st.Location = new System.Drawing.Point(434, 37);
+            this.output_st.Name = "output_st";
+            this.output_st.Size = new System.Drawing.Size(38, 19);
+            this.output_st.TabIndex = 44;
+            // 
             // がしゃふぃるたー
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(484, 612);
+            this.Controls.Add(this.output_st);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.checkBox11);
@@ -862,6 +872,7 @@
         private System.Windows.Forms.CheckBox checkBox12;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox output_st;
     }
 }
 

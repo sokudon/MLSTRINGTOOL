@@ -380,7 +380,7 @@ namespace WindowsFormsApplication7
                 string regst = "(\\d+位.+\n)+※.+集計時点のポイントです";
                 if (checkBox9.Checked == true)
                 {
-                    regst = "\\d+位の.*?pt\\d+(,\\d{3})*pt\r\n現在の順位.+\r\n※.+集計時点";
+                    regst = "\\d+位の.*?pt\\d+(,\\d{3})*pt\r\n(現在の順位.+\r\n)?※.+集計時点";
                 }
 
 
@@ -397,13 +397,12 @@ namespace WindowsFormsApplication7
                 Match lm = ls.Match(sbase);
                 Regex fs = new Regex("本日の総フェス勝利数\r\n(\\d+ / \\d+)\r\n\r\n※.+集計時点");
                 Match fm = fs.Match(sbase);
-                Regex ts = new Regex("本日の達成まで\r\nあと[ \t]+\\d+[ \t]+pt\r\n\r\n※.+集計時点");
+                Regex ts = new Regex("(本日の達成|連?続?フィーバー)まで(\r\n)?あと[ \t]+\\d+(,\\d+)*[ \t]+pt\r\n(\r\n)?※.+集計時点");
                 Match tm = ts.Match(sbase);
-                Regex idols = new Regex("(.*?\t?){3}\r\n(\\d+ / \\d+\t?){3}\r\n※.+集計時点");
+                Regex idols = new Regex("(.+\r\n){3}※.+集計時点の思い出");
                 Match idolm = idols.Match(sbase);
                 if (lm.Success)
                 {
-
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(lm.Value);
                     sbtm.AppendLine(nw.ToString("※MM/dd HH:mm 集計時点　らうんじ"));
@@ -425,6 +424,15 @@ namespace WindowsFormsApplication7
 
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(idolm.Value);
+                }
+
+
+
+                if (checkBox9.Checked == true)
+                {
+                    string rr = sbtm.ToString();
+                    rr = Regex.Replace(rr, "現在.*?\r\n", "");
+                    return rr;
                 }
 
                 return sbtm.ToString();
@@ -460,8 +468,8 @@ namespace WindowsFormsApplication7
             }
             else if (comboBox4.Text.Contains("100/500/1200/3000収集"))
             {
-                
-                Regex ranks = new Regex("(\\d+0|\t1?1)位.+\n.+\n.+pt (\\d+(,\\d{3})*)");
+
+                Regex ranks = new Regex("(\\d+0|\t1?1|765)位.+\n.+\n.+pt (\\d+(,\\d{3})*)");
                 Match rankm = ranks.Match(sbase);
                 int interval = 20;
                 int mtime = 10;
@@ -530,6 +538,7 @@ namespace WindowsFormsApplication7
                     {
                         Regex idol = new Regex("(秋月律子|天海春香|伊吹翼|エミリー|大神環|春日未来|音無小鳥|我那覇響|菊地真|如月千早|北上麗花|北沢志保|木下ひなた|高坂海美|佐竹美奈子|四条貴音|篠宮可憐|島原エレナ|ジュリア|周防桃子|高槻やよい|高山紗代子|田中琴葉|天空橋朋花|徳川まつり|所恵美|豊川風花|中谷育|永吉昴|七尾百合子|二階堂千鶴|野々原茜|萩原雪歩|箱崎星梨花|馬場このみ|福田のり子|双海亜美|双海真美|星井美希|舞浜歩|真壁瑞希|松田亜利沙|三浦あずさ|宮尾美也|水瀬伊織|最上静香|望月杏奈|百瀬莉緒|矢吹可奈|横山奈緒|ロコ)");
                         Match idm = idol.Match(sbase);
+
                         if (idm.Success)
                         {
                             sbtm.Append(idm.Value);
@@ -649,19 +658,34 @@ namespace WindowsFormsApplication7
                 string ll="<a href=\"http://imas.gree-apps.net/app/index.php/lounge/profile/id/(\\d+)\" ?>(.*?)</a>";
                 string ff ="<span class=\"txt-sub2\">ファン数/週&nbsp;</span>(\\d+(,\\d+)*)人";
                string uu= "<a href=\"http://imas.gree-apps.net/app/index.php/mypage/user_profile/id/(\\d+)\" ?>(.*?)</a>";
-                string ss= "<span class=\"txt-sub2\">.*?pt&nbsp;</span>(\\d+(,\\d+)*)";
+               string ss = "<span class=\"txt-sub2\">.*?&nbsp;</span>(\\d+(,\\d+)*)";
+               string kidol = "<li class=\"tab-item tab-base is-active\">(.*?)</li>";
+               string kiz = "<span class=\"txt-sub2\">絆(Lv|Exp).*?</span>(\\d+)"; 
+
+                if (checkBox12.Checked) {
+                    uu = "ZZ";
+                    ll = "XX";
+                    ss = "SS";
+                }
 
                 Regex lounge = new Regex(ll);
                 Regex fansuu = new Regex(ff);
                 Regex user = new Regex(uu);
                 Regex score = new Regex(ss);
+                Regex ki = new Regex(kidol);
+                Regex kz = new Regex(kiz);
+                int i = 0;
                 string temp = "";
+                int rankct = 0;
                 foreach (string s in str)
                 {
                     Match lm = lounge.Match(s);
                     Match fm = fansuu.Match(s);
                     Match um = user.Match(s);
                     Match sm = score.Match(s);
+                    Match kim = ki.Match(s);
+                    Match kzm = kz.Match(s);
+
                     if (lm.Success) {
                         sbtm.Append(Regex.Replace(lm.Value, ll, "$2\t$1\t"));
                     }
@@ -673,11 +697,49 @@ namespace WindowsFormsApplication7
                     {
                         sbtm.Append(Regex.Replace(um.Value, uu, "$2\t$1\t"));
                     }
+                    if (kim.Success)
+                    {
+                        if (i == 0)
+                        {
+                            temp = Regex.Replace(kim.Value, kidol, "$1");
+                            i++;
+                        }
+                        else
+                        {
+                           rankct= Convert.ToInt32(Regex.Replace(kim.Value, kidol, "$1").Replace("トップ", "1位").Replace("位", ""));
+                           if (rankct == 100) {
+                               rankct=91;
+                           }
+                           i = 0;
+                        }
+                    }
+                    if (kzm.Success)
+                    {
+                        if (i == 0)
+                        {
+                            if (rankct == 1 || rankct == 10 || rankct==100){
+                             sbtm.Append(temp);
+                            sbtm.Append("\t");
+                            sbtm.Append(rankct.ToString());
+                            sbtm.Append("位\t");
+                            sbtm.Append(Regex.Replace(kzm.Value, kiz, "$2"));
+                        }
+                            i++;
+                        }
+                        else
+                        {
+                            if (rankct == 1 || rankct == 10 || rankct == 100)
+                            {
+                                sbtm.AppendLine(Regex.Replace(kzm.Value, kiz, ".$2"));
+                            }
+                            rankct++;
+                            i = 0;
+                        }
+                    }
                     if (sm.Success)
                     {
                         sbtm.AppendLine(Regex.Replace(sm.Value, ss, "$1"));
                     }
-
 
                 }
 
@@ -1791,6 +1853,17 @@ namespace WindowsFormsApplication7
       sw2.Write(textBox6.Text);
       sw2.Close();
   }
+      if (output_st.Text != "") {
+          System.IO.StreamWriter sw3 = new System.IO.StreamWriter(output_st.Text+".txt",
+ false,
+ System.Text.Encoding.GetEncoding("utf-8"));
+          //TextBox1.Textの内容を書き込む
+          sw3.Write(textBox2.Text);
+          sw3.Close();
+      
+      }
+
+
   }
 
 
