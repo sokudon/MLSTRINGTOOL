@@ -390,14 +390,23 @@ namespace WindowsFormsApplication7
 
                     sbtm.AppendLine();
                     sbtm.AppendLine(rankm.Value);
+
+                    if (savetime.Checked == true)
+                    {
+
+                        sbtm.AppendLine(DateTime.Now.ToString("※MM/dd HH:mm:ss 保存時刻(ﾟ∀ﾟ)\r\n"));
+                    }
                 }
+
+                sbase = sbase.Replace("みんなでビートptをためて『フィーバーライブ』を開催しよう！\r\nフィーバーライブにアピールすることで、「新シアターくじ券」を獲得できます!\r\n", "");
+
 
                 DateTime nw = DateTime.Now;
                 Regex ls = new Regex("総マスターズpt\r\n(\\d+(,\\d+)*) pt");
                 Match lm = ls.Match(sbase);
                 Regex fs = new Regex("本日の総フェス勝利数\r\n(\\d+ / \\d+)\r\n\r\n※.+集計時点");
                 Match fm = fs.Match(sbase);
-                Regex ts = new Regex("(本日の達成|連?続?フィーバー)まで(\r\n)?あと[ \t]+\\d+(,\\d+)*[ \t]+pt\r\n(\r\n)?※.+集計時点");
+                Regex ts = new Regex("(本日の達成|連?続?フィーバー|フィーバーライブ開催)まで(\r\n)?あと[ \t]+\\d+(,\\d+)*[ \t]+pt\r\n(.*\r\n){0,3}※.+集計時点");
                 Match tm = ts.Match(sbase);
                 Regex idols = new Regex("(.+\r\n){3}※.+集計時点の思い出");
                 Match idolm = idols.Match(sbase);

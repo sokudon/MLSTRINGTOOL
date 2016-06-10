@@ -77,6 +77,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.output_st = new System.Windows.Forms.TextBox();
+            this.savetime = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -785,12 +786,23 @@
             this.output_st.Size = new System.Drawing.Size(38, 19);
             this.output_st.TabIndex = 44;
             // 
+            // savetime
+            // 
+            this.savetime.AutoSize = true;
+            this.savetime.Location = new System.Drawing.Point(26, 357);
+            this.savetime.Name = "savetime";
+            this.savetime.Size = new System.Drawing.Size(72, 16);
+            this.savetime.TabIndex = 45;
+            this.savetime.Text = "保存時刻";
+            this.savetime.UseVisualStyleBackColor = true;
+            // 
             // がしゃふぃるたー
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(484, 612);
+            this.Controls.Add(this.savetime);
             this.Controls.Add(this.output_st);
             this.Controls.Add(this.textBox6);
             this.Controls.Add(this.button6);
@@ -873,6 +885,7 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox output_st;
+        private System.Windows.Forms.CheckBox savetime;
     }
 }
 
