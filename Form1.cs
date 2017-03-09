@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel; //
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -377,10 +377,26 @@ namespace WindowsFormsApplication7
             else if (comboBox4.Text.Contains("RTB収集"))
             {
 
-                string regst = "(\\d+位.+\n)+※.+集計時点のポイントです";
+                string regst = "(\\d+位.+\n)+※.+集計時点";
                 if (checkBox9.Checked == true)
                 {
-                    regst = "\\d+位の.*?pt\\d+(,\\d{3})*pt\r\n(現在の順位.+\r\n)?※.+集計時点";
+                    //regst = "\\d+位の.*?pt(\r\r)?\\d+(,\\d{3})*pt\r\n(現在の順位.+\r\n)?※.+集計時点";
+                    regst = "\\d+位の.*?pt.*?\\d+(,\\d{3})* pt\r\n※.+集計時点";
+                    int seek = sbase.IndexOf("選択チーム");
+                    if (seek > 0) { 
+                    sbase = sbase.Substring(seek, sbase.Length - seek - 1);
+                    sbase = sbase.Replace("現在の順位\r\n", "");
+                    sbase = sbase.Replace("集計中\r\n", "");
+                    sbase = Regex.Replace(sbase, "\\d+位\r\n", "");
+                    sbase = sbase.Replace("pt\r\n", "pt\t");
+                    sbase = sbase.Replace("pt\t※", "pt\r\n※");
+                    sbase = Regex.Replace(sbase, "pt\tチーム.+\r\n", "pt\r\n");
+                    }
+
+                }
+                if (checkBox12.Checked == true)
+                {
+                    regst = "((.*?)(\\d+位.+\n))+※.+集計時点";
                 }
 
 
@@ -402,7 +418,7 @@ namespace WindowsFormsApplication7
 
 
                 DateTime nw = DateTime.Now;
-                Regex ls = new Regex("総マスターズpt\r\n(\\d+(,\\d+)*) pt");
+                Regex ls = new Regex("総(マスターズ|ラウンジ)pt\r\n(\\d+(,\\d+)*) pt");
                 Match lm = ls.Match(sbase);
                 Regex fs = new Regex("本日の総フェス勝利数\r\n(\\d+ / \\d+)\r\n\r\n※.+集計時点");
                 Match fm = fs.Match(sbase);
@@ -410,6 +426,9 @@ namespace WindowsFormsApplication7
                 Match tm = ts.Match(sbase);
                 Regex idols = new Regex("(.+\r\n){3}※.+集計時点の思い出");
                 Match idolm = idols.Match(sbase);
+                Regex asm = new Regex("応援ゲージMAXまで あと\r\n?\\d+(,\\d+)* ASpt\r\n\r\n応援ゲージ： \\d+ %");
+                Match asmm = asm.Match(sbase);
+
                 if (lm.Success)
                 {
                     sbtm.AppendLine("|");
@@ -434,6 +453,14 @@ namespace WindowsFormsApplication7
                     sbtm.AppendLine("|");
                     sbtm.AppendLine(idolm.Value);
                 }
+                if (asmm.Success)
+                {
+
+                    sbtm.AppendLine("|");
+                    sbtm.AppendLine(asmm.Value);
+                    sbtm.AppendLine(DateTime.Now.ToString("※MM/dd HH:mm 集計時点のASpt"));
+                }
+
 
 
 
@@ -472,6 +499,27 @@ namespace WindowsFormsApplication7
 
                    sbtm.AppendLine(DateTime.Now.ToString("//yyyyMMddHHmm"));
                    sbtm.AppendLine(sbase);
+                }
+                return sbtm.ToString();
+            }
+            else if (comboBox4.Text.Contains("GREE"))
+            {
+                int start = sbase.IndexOf("アイドルランキング");
+                int end = sbase.LastIndexOf("イベントTOP") - start;
+
+                if (end - start > 8)
+                {
+                   sbase = sbase.Substring(start + 4, end - 4);
+                   sbase = Regex.Replace(sbase, "^\t", "");                    
+                   sbase = sbase.Replace("を選択中", "");
+                   sbase = Regex.Replace(sbase, "^\t\t", "N位");
+                   sbase = Regex.Replace(sbase, "\t\t", "");
+                   sbase = Regex.Replace(sbase, "\r\n", "\t");
+                   sbase = Regex.Replace(sbase, "pt\t", "pt\r\n");
+
+                    //sbtm.AppendLine(DateTime.Now.ToString("//yyyyMMddHHmm"));
+                    sbtm.Append(sbase);
+                    sbtm.AppendLine(DateTime.Now.ToString("※MM/dd HH:mm 集計時点 BYそくどん\r\n"));
                 }
                 return sbtm.ToString();
             }
@@ -664,7 +712,48 @@ namespace WindowsFormsApplication7
             if (comboBox4.Text.Contains("HTML"))
             {
 
-                string ll="<a href=\"http://imas.gree-apps.net/app/index.php/lounge/profile/id/(\\d+)\" ?>(.*?)</a>";
+                if (checkBox9.Checked == true)
+                {
+                    int start = sbase.IndexOf("memberStatus");
+                    int end = sbase.IndexOf("mySwiper");
+                    if (start > 0) { 
+                    string sss = sbase.Substring(start, end - start);
+                        sss = Regex.Replace(sss, ",\r\n?", "\r\n");
+                        sss = Regex.Replace(sss,"var.+", "");
+                        sss = Regex.Replace(sss, "memberStatus.+", "");
+                        sss = Regex.Replace(sss, "unitLevel.+", "");
+                        sss = Regex.Replace(sss, "centerIdol.+", "");
+                        sss = Regex.Replace(sss, "unitStatus.+", "");
+                        sss = Regex.Replace(sss, "user.+", "");
+                        sss = Regex.Replace(sss, "'", "");
+                        sss = Regex.Replace(sss, "};", "");
+                        sss = Regex.Replace(sss, "<.*?>", "");
+                        sss = Regex.Replace(sss, ".*?[a-z]:", "");
+                        sss = Regex.Replace(sss, " +", "");
+                        sss = Regex.Replace(sss, "\t+", "");
+                        sss = Regex.Replace(sss, ",\r\n", "\t");
+                        sss = Regex.Replace(sss, "\n+", "");
+                        sss = Regex.Replace(sss, "\r", "\r\n");
+                        sss = Regex.Replace(sss, "pt\t", "pt\r\n");
+                        sss = Regex.Replace(sss, "(チーム[A-Z])\r\n(\\d+)\r\n", "$2位の$1 pt\t");
+                        sss = Regex.Replace(sss, "&nbsp;", " ");
+
+                        if (checkBox12.Checked == true)
+                        {
+                            sss = Regex.Replace(sss, "\r\n\r\n", "\r\n");
+                            sss = Regex.Replace(sss, "\r\n\r\n", "\r\n");
+                            Regex idol = new Regex("※.+集計時点");
+                            Match idm = idol.Match(sss);
+                            sss = Regex.Replace(sss, "※.+集計時点\r\n", "");
+                            sss = sss + idm.Value+ "\r\n";
+                        }
+                        sbtm.AppendLine(sss);
+                    }
+                    return sbtm.ToString();
+
+                }
+
+                    string ll="<a href=\"http://imas.gree-apps.net/app/index.php/lounge/profile/id/(\\d+)\" ?>(.*?)</a>";
                 string ff ="<span class=\"txt-sub2\">ファン数/週&nbsp;</span>(\\d+(,\\d+)*)人";
                string uu= "<a href=\"http://imas.gree-apps.net/app/index.php/mypage/user_profile/id/(\\d+)\" ?>(.*?)</a>";
                string ss = "<span class=\"txt-sub2\">.*?&nbsp;</span>(\\d+(,\\d+)*)";
